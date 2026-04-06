@@ -12,8 +12,9 @@ import { motion } from "framer-motion";
 // If the image is also missing, it shows the premium gradient fallback.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const VIDEO_SRC = "/assets/intro-video.mp4";
-const HERO_IMAGE_SRC = "/assets/final-hero-bg.jpg";
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const VIDEO_SRC = `${BASE}/assets/intro-video.mp4`;
+const HERO_IMAGE_SRC = `${BASE}/assets/final-hero-bg.jpg`;
 
 function FallbackBackground() {
   return (
