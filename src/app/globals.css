@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/* ============================================================
+   RenoAI Brand Design System
+   ============================================================ */
+
+@theme inline {
+  /* Brand Colors */
+  --color-reno-bg: #081512;
+  --color-reno-green: #123C33;
+  --color-reno-green-2: #0F3D2E;
+  --color-reno-gold: #C89B3C;
+  --color-reno-gold-light: #D4A84B;
+  --color-reno-text: #F5F7F6;
+  --color-reno-muted: #9BA8A3;
+  --color-reno-surface: #0D2420;
+  --color-reno-border: #1E4A3E;
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   Base Styles
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: #081512;
+  color: #F5F7F6;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   Custom Scrollbar
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #081512;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E4A3E;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C89B3C;
+}
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+
+.glass {
+  background: rgba(18, 60, 51, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(200, 155, 60, 0.12);
+}
+
+.glass-dark {
+  background: rgba(8, 21, 18, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(30, 74, 62, 0.4);
+}
+
+.gold-glow {
+  box-shadow: 0 0 30px rgba(200, 155, 60, 0.15), 0 0 60px rgba(200, 155, 60, 0.05);
+}
+
+.green-glow {
+  box-shadow: 0 0 40px rgba(18, 60, 51, 0.6), 0 0 80px rgba(18, 60, 51, 0.2);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #C89B3C 0%, #D4A84B 50%, #C89B3C 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, #4CAF82 0%, #2D8F5A 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero video overlay gradient */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 21, 18, 0.3) 0%,
+    rgba(8, 21, 18, 0.5) 40%,
+    rgba(8, 21, 18, 0.85) 80%,
+    rgba(8, 21, 18, 1) 100%
+  );
+}
+
+/* Section fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 20px rgba(200, 155, 60, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(200, 155, 60, 0.4); }
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 3s ease-in-out infinite;
+}
+
+/* Mobile-safe tap targets */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Phone frame for product preview */
+.phone-frame {
+  border: 2px solid rgba(30, 74, 62, 0.6);
+  background: #0A1F1B;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(200, 155, 60, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Ambient background glows */
+.ambient-glow-green {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(18, 60, 51, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.ambient-glow-gold {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(200, 155, 60, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
