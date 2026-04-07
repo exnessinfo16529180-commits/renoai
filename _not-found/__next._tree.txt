@@ -1,2 +1,2 @@
-:HL["/renoai/_next/static/chunks/083okjps~f9zk.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"-xNykk25rWtkXNexI6N2k"}
+:HL["/renoai/_next/static/chunks/02h2-0o9wawxo.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":0,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}}}},"staleTime":300,"buildId":"Vrcg54TDRkIZQyDKK91Xz"}
