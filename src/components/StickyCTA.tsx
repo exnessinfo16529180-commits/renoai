@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function StickyCTA() {
@@ -67,16 +68,18 @@ export default function StickyCTA() {
             </div>
 
             {/* CTA button */}
-            <button
-              className="shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 active:scale-95"
+            <Link
+              href="/project"
+              className="shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 active:scale-95 flex items-center"
               style={{
                 background: "linear-gradient(135deg, #C89B3C, #B8892C)",
                 color: "#081512",
                 boxShadow: "0 4px 15px rgba(200,155,60,0.3)",
+                textDecoration: "none",
               }}
             >
               Начать
-            </button>
+            </Link>
           </div>
         </motion.div>
       )}

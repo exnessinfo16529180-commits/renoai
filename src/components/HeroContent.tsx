@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 
 export default function HeroContent({ onDemoOpen }: { onDemoOpen: () => void }) {
@@ -87,25 +88,27 @@ export default function HeroContent({ onDemoOpen }: { onDemoOpen: () => void }) 
           className="flex flex-col w-full gap-3"
         >
           {/* Primary */}
-          <button
-            className="w-full py-4 rounded-2xl text-sm font-semibold transition-all duration-300 active:scale-95"
+          <Link
+            href="/project"
+            className="w-full py-4 rounded-2xl text-sm font-semibold transition-all duration-300 active:scale-95 flex items-center justify-center"
             style={{
               background: "linear-gradient(135deg, #C89B3C 0%, #B8892C 100%)",
               color: "#081512",
               letterSpacing: "0.01em",
               boxShadow: "0 8px 30px rgba(200,155,60,0.25)",
+              textDecoration: "none",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 12px 40px rgba(200,155,60,0.4)";
-              e.currentTarget.style.transform = "translateY(-1px)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 40px rgba(200,155,60,0.4)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "0 8px 30px rgba(200,155,60,0.25)";
-              e.currentTarget.style.transform = "translateY(0)";
+              (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 30px rgba(200,155,60,0.25)";
+              (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
             }}
           >
             Начать проект
-          </button>
+          </Link>
 
           {/* Demo CTA */}
           <button
