@@ -32,11 +32,20 @@ export default function Home() {
     // Guard against double-fire from wheel/touch events
     if (scrollHandledRef.current) return;
     scrollHandledRef.current = true;
-    // Unlock first, then smooth-scroll to content — no competing commands
     document.body.style.overflow = "";
-    requestAnimationFrame(() => {
-      document.getElementById("main-content")?.scrollIntoView({ behavior: "smooth" });
-    });
+
+    // Scroll to main-content using an instant jump (no smooth animation).
+    // Smooth scroll would start an animation that fights mobile momentum and
+    // pulls the user back if they've already swiped past the target.
+    // Guard: if the user's gesture already carried them past the target
+    // (iOS can scroll even through overflow:hidden), don't scroll backward.
+    const mainEl = document.getElementById("main-content");
+    if (mainEl) {
+      const mainTop = mainEl.getBoundingClientRect().top + window.scrollY;
+      if (window.scrollY < mainTop) {
+        window.scrollTo(0, mainTop);
+      }
+    }
   }, []);
 
   return (
