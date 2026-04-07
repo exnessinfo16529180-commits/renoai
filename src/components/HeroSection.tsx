@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -13,51 +13,35 @@ export default function HeroSection({ onScrollDown }: { onScrollDown: () => void
   const videoRef = useRef<HTMLVideoElement>(null);
   const [phase, setPhase] = useState<Phase>("buffering");
   const [imgError, setImgError] = useState(false);
-  const onScrollRef = useRef(onScrollDown);
-  onScrollRef.current = onScrollDown;
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
 
     const goHero = () => setPhase("hero");
-    const fallback = setTimeout(goHero, 14000);
+    // Reduced from 14s to 6s — show the hero image faster if video is slow
+    const fallback = setTimeout(goHero, 6000);
 
     const onCanPlay = () => v.play().catch(goHero);
     const onPlaying = () => setPhase("playing");
 
     v.addEventListener("canplaythrough", onCanPlay, { once: true });
-    v.addEventListener("playing", onPlaying, { once: true });
-    v.addEventListener("ended", goHero, { once: true });
-    v.addEventListener("error", goHero, { once: true });
+    v.addEventListener("playing",        onPlaying, { once: true });
+    v.addEventListener("ended",          goHero,    { once: true });
+    v.addEventListener("error",          goHero,    { once: true });
 
     return () => {
       clearTimeout(fallback);
       v.removeEventListener("canplaythrough", onCanPlay);
-      v.removeEventListener("playing", onPlaying);
-      v.removeEventListener("ended", goHero);
-      v.removeEventListener("error", goHero);
+      v.removeEventListener("playing",        onPlaying);
+      v.removeEventListener("ended",          goHero);
+      v.removeEventListener("error",          goHero);
     };
   }, []);
 
-  // Wheel + swipe to trigger scroll when on hero photo phase
-  useEffect(() => {
-    if (phase !== "hero") return;
-    const onWheel = (e: WheelEvent) => { if (e.deltaY > 10) onScrollRef.current(); };
-    let startY = 0;
-    const onTouchStart = (e: TouchEvent) => { startY = e.touches[0].clientY; };
-    const onTouchEnd = (e: TouchEvent) => {
-      if (startY - e.changedTouches[0].clientY > 40) onScrollRef.current();
-    };
-    window.addEventListener("wheel", onWheel, { passive: true });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchend", onTouchEnd);
-    };
-  }, [phase]);
+  // NO wheel/touch listeners. No scroll interception at all.
+  // The hero is a normal full-screen section. Users scroll past it with
+  // their own gesture. The "Листайте" button below calls onScrollDown on click.
 
   return (
     <div className="relative w-full h-screen overflow-hidden" style={{ background: "#081512" }}>
@@ -90,13 +74,13 @@ export default function HeroSection({ onScrollDown }: { onScrollDown: () => void
         )}
       </AnimatePresence>
 
-      {/* ── Video (pure fullscreen, zero UI overlay) ── */}
+      {/* ── Video ── */}
       <video
         ref={videoRef}
         src={VIDEO_SRC}
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
           phase === "playing" ? "opacity-100" : "opacity-0"
         }`}
@@ -111,7 +95,6 @@ export default function HeroSection({ onScrollDown }: { onScrollDown: () => void
             transition={{ duration: 2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="absolute inset-0"
           >
-            {/* Background image or fallback gradient */}
             {!imgError ? (
               <img
                 src={IMAGE_SRC}
@@ -154,7 +137,7 @@ export default function HeroSection({ onScrollDown }: { onScrollDown: () => void
               </span>
             </motion.div>
 
-            {/* Scroll down indicator — bottom center */}
+            {/* Scroll down indicator — bottom center, click only */}
             <motion.button
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
