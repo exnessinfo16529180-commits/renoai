@@ -129,9 +129,8 @@ export default function AboutSection() {
               transition={{ duration: 0.6, delay: 0.15 + i * 0.12 }}
               className="relative rounded-3xl p-6 overflow-hidden"
               style={{
-                background: "rgba(13,36,32,0.6)",
+                background: "rgba(13,36,32,0.8)",
                 border: "1px solid rgba(30,74,62,0.5)",
-                backdropFilter: "blur(10px)",
               }}
             >
               {/* Card accent glow */}

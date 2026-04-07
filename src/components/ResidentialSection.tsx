@@ -221,6 +221,7 @@ export default function ResidentialSection() {
               marginRight: -20,
               paddingLeft: 20,
               paddingRight: 20,
+              touchAction: "pan-x",
             }}
           >
             {COMPLEXES.map((cx, i) => (

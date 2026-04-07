@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 
 // Dynamically import heavy/client-only components
@@ -18,43 +18,24 @@ import FinalCTA     from "@/components/FinalCTA";
 import Footer       from "@/components/Footer";
 
 export default function Home() {
-  const [heroScrolled, setHeroScrolled] = useState(false);
-  const [demoOpen,     setDemoOpen]     = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const scrollHandledRef = useRef(false);
 
-  // Lock scroll while hero video / photo plays.
-  // Uses position:fixed trick to prevent the "snap back to top" bug
-  // that occurs when overflow:hidden is released and scrollY resets.
+  // Lock scroll while the hero plays. The page always starts at Y=0 so
+  // simple overflow:hidden is safe — it won't shift scroll position.
   useEffect(() => {
-    if (heroScrolled) return;
-
-    const savedY = window.scrollY;
-    document.body.style.position   = "fixed";
-    document.body.style.top        = `-${savedY}px`;
-    document.body.style.width      = "100%";
-    document.body.style.overflowY  = "scroll";
-
-    const block = (e: TouchEvent) => e.preventDefault();
-    document.addEventListener("touchmove", block, { passive: false });
-
-    return () => {
-      const restoredY = Math.abs(parseInt(document.body.style.top || "0", 10));
-      document.body.style.position  = "";
-      document.body.style.top       = "";
-      document.body.style.width     = "";
-      document.body.style.overflowY = "";
-      window.scrollTo(0, restoredY);
-      document.removeEventListener("touchmove", block);
-    };
-  }, [heroScrolled]);
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
 
   const handleScrollDown = useCallback(() => {
-    setHeroScrolled(true);
-    // After the lock-release cleanup restores scroll position,
-    // smooth-scroll to main content in the next paint.
+    // Guard against double-fire from wheel/touch events
+    if (scrollHandledRef.current) return;
+    scrollHandledRef.current = true;
+    // Unlock first, then smooth-scroll to content — no competing commands
+    document.body.style.overflow = "";
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        document.getElementById("main-content")?.scrollIntoView({ behavior: "smooth" });
-      });
+      document.getElementById("main-content")?.scrollIntoView({ behavior: "smooth" });
     });
   }, []);
 
