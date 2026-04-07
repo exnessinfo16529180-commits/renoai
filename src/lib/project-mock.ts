@@ -140,7 +140,7 @@ export const STORES: StoreOption[] = [
     tagline: "Полный ассортимент для вашего проекта",
     rating: 4.7,
     priceLevel: 2,
-    estimate: "от 320 000 ₽",
+    estimate: "от 1 900 000 ₸",
     deliveryDays: "3–7 дней",
     badge: "Рекомендуем",
   },
@@ -150,7 +150,7 @@ export const STORES: StoreOption[] = [
     tagline: "Мебель и аксессуары под ваш стиль",
     rating: 4.5,
     priceLevel: 1,
-    estimate: "от 180 000 ₽",
+    estimate: "от 900 000 ₸",
     deliveryDays: "5–10 дней",
   },
   {
@@ -159,7 +159,7 @@ export const STORES: StoreOption[] = [
     tagline: "Эксклюзивные материалы и дизайнерские решения",
     rating: 4.9,
     priceLevel: 3,
-    estimate: "от 680 000 ₽",
+    estimate: "от 3 800 000 ₸",
     deliveryDays: "7–14 дней",
     badge: "Премиум",
   },
@@ -243,7 +243,7 @@ export const TEAMS: RenovationTeam[] = [
     specialization: "Дизайнерский ремонт под ключ",
     rating: 4.9,
     reviewCount: 142,
-    estimate: "от 4 800 ₽/м²",
+    estimate: "от 28 000 ₸/м²",
     duration: "45–60 дней",
     description:
       "Специализируемся на современных стилях. Работаем с авторскими проектами, используем BIM-технологии для точных расчётов.",
@@ -255,7 +255,7 @@ export const TEAMS: RenovationTeam[] = [
     specialization: "Полный цикл ремонтных работ",
     rating: 4.7,
     reviewCount: 318,
-    estimate: "от 3 200 ₽/м²",
+    estimate: "от 18 000 ₸/м²",
     duration: "40–55 дней",
     description:
       "Более 10 лет опыта. Работаем с любыми стилями, строгий контроль качества на каждом этапе.",
@@ -267,7 +267,7 @@ export const TEAMS: RenovationTeam[] = [
     specialization: "Luxury и премиум-класс",
     rating: 5.0,
     reviewCount: 67,
-    estimate: "от 9 500 ₽/м²",
+    estimate: "от 55 000 ₸/м²",
     duration: "60–90 дней",
     description:
       "Работаем исключительно с материалами премиум-класса. Персональный куратор проекта, еженедельные отчёты.",

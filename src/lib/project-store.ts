@@ -29,6 +29,8 @@ export interface ProjectData {
   selectedStore: string | null;
   selectedDelivery: string | null;
   selectedTeam: string | null;
+  /** Partner residential complex pre-selected from the landing page */
+  selectedComplex: string | null;
 }
 
 interface ProjectActions {
@@ -54,6 +56,7 @@ const initial: ProjectData = {
   selectedStore: null,
   selectedDelivery: null,
   selectedTeam: null,
+  selectedComplex: null,
 };
 
 export const useProjectStore = create<ProjectState>()(

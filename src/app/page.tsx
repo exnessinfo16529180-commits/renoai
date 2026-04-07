@@ -4,9 +4,10 @@ import { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 
 // Dynamically import heavy/client-only components
-const HeroSection = dynamic(() => import("@/components/HeroSection"), { ssr: false });
-const DemoFlow   = dynamic(() => import("@/components/DemoFlow"),    { ssr: false });
-const StickyCTA  = dynamic(() => import("@/components/StickyCTA"),   { ssr: false });
+const HeroSection        = dynamic(() => import("@/components/HeroSection"),        { ssr: false });
+const DemoFlow           = dynamic(() => import("@/components/DemoFlow"),            { ssr: false });
+const StickyCTA          = dynamic(() => import("@/components/StickyCTA"),           { ssr: false });
+const ResidentialSection = dynamic(() => import("@/components/ResidentialSection"), { ssr: false });
 
 import HeroContent  from "@/components/HeroContent";
 import AboutSection from "@/components/AboutSection";
@@ -20,25 +21,36 @@ export default function Home() {
   const [heroScrolled, setHeroScrolled] = useState(false);
   const [demoOpen,     setDemoOpen]     = useState(false);
 
-  // Lock scroll until user explicitly scrolls past the hero
+  // Lock scroll while hero video / photo plays.
+  // Uses position:fixed trick to prevent the "snap back to top" bug
+  // that occurs when overflow:hidden is released and scrollY resets.
   useEffect(() => {
     if (heroScrolled) return;
 
-    document.documentElement.style.overflow = "hidden";
+    const savedY = window.scrollY;
+    document.body.style.position   = "fixed";
+    document.body.style.top        = `-${savedY}px`;
+    document.body.style.width      = "100%";
+    document.body.style.overflowY  = "scroll";
 
-    // iOS Safari: also block touchmove
     const block = (e: TouchEvent) => e.preventDefault();
     document.addEventListener("touchmove", block, { passive: false });
 
     return () => {
-      document.documentElement.style.overflow = "";
+      const restoredY = Math.abs(parseInt(document.body.style.top || "0", 10));
+      document.body.style.position  = "";
+      document.body.style.top       = "";
+      document.body.style.width     = "";
+      document.body.style.overflowY = "";
+      window.scrollTo(0, restoredY);
       document.removeEventListener("touchmove", block);
     };
   }, [heroScrolled]);
 
   const handleScrollDown = useCallback(() => {
     setHeroScrolled(true);
-    // Give browser one frame to release the lock, then smooth-scroll
+    // After the lock-release cleanup restores scroll position,
+    // smooth-scroll to main content in the next paint.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         document.getElementById("main-content")?.scrollIntoView({ behavior: "smooth" });
@@ -53,21 +65,20 @@ export default function Home() {
 
       {/* ── All content below the hero ── */}
       <main id="main-content">
-        {/* Headline + CTAs that appear after scroll */}
         <HeroContent onDemoOpen={() => setDemoOpen(true)} />
-
         <AboutSection />
         <HowItWorks />
         <ProductFlow />
+
+        {/* ── Partner residential complexes ── */}
+        <ResidentialSection />
+
         <Benefits />
         <FinalCTA />
         <Footer />
       </main>
 
-      {/* ── Interactive demo modal ── */}
       {demoOpen && <DemoFlow onClose={() => setDemoOpen(false)} />}
-
-      {/* ── Sticky bottom CTA (appears after scrolling past hero) ── */}
       <StickyCTA />
     </>
   );

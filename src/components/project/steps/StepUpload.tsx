@@ -5,6 +5,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import StepWrapper from "@/components/project/ui/StepWrapper";
 import { useProjectStore } from "@/lib/project-store";
 
+// ┌── AI_INTEGRATION_POINT ─────────────────────────────────────────────────
+// │ COMPLEX_LAYOUTS maps partner complex IDs to pre-loaded floor plan data.
+// │ Replace with: GET /api/complexes/:id/layouts
+// │ Returns: { rooms, area, layoutType, previewUrl }
+// └─────────────────────────────────────────────────────────────────────────
+const COMPLEX_NAMES: Record<string, string> = {
+  "bi-esentai":    "Esentai Tower Residences",
+  "bazis-symphony":"Symphony",
+  "bi-expo":       "Expo Boulevard",
+  "mega-center":   "Park Avenue",
+  "kusto-grand":   "Grand Almaty",
+};
+
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
@@ -12,7 +25,12 @@ function formatBytes(bytes: number) {
 }
 
 export default function StepUpload() {
-  const { uploadedFile, update, setStep } = useProjectStore();
+  const { uploadedFile, selectedComplex, update, setStep } = useProjectStore();
+
+  // If a partner complex was selected on the landing page, show the privilege screen
+  if (selectedComplex) {
+    return <ComplexPrivilegeScreen complexId={selectedComplex} />;
+  }
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -321,3 +339,128 @@ const mobileBtn: React.CSSProperties = {
   cursor: "pointer",
   WebkitTapHighlightColor: "transparent",
 };
+
+// ── Partner complex privilege screen ────────────────────────────────────────
+
+function ComplexPrivilegeScreen({ complexId }: { complexId: string }) {
+  const { update, setStep } = useProjectStore();
+  const complexName = COMPLEX_NAMES[complexId] ?? "вашего ЖК";
+
+  return (
+    <StepWrapper
+      title="Планировки уже загружены"
+      cta={{
+        label: "Перейти к анализу",
+        onClick: () => setStep(4),
+      }}
+      secondary={{
+        label: "Загрузить другой файл",
+        onClick: () => update({ selectedComplex: null }),
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.35 }}
+      >
+        {/* Privilege banner */}
+        <div
+          style={{
+            padding: "22px 20px",
+            borderRadius: 20,
+            background: "linear-gradient(135deg, rgba(200,155,60,0.1) 0%, rgba(18,60,51,0.2) 100%)",
+            border: "1.5px solid rgba(200,155,60,0.35)",
+            marginBottom: 20,
+            display: "flex",
+            gap: 16,
+            alignItems: "flex-start",
+          }}
+        >
+          {/* Icon */}
+          <div
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 14,
+              background: "rgba(200,155,60,0.15)",
+              border: "1px solid rgba(200,155,60,0.3)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+              fontSize: 22,
+            }}
+          >
+            📐
+          </div>
+          <div>
+            <p
+              style={{
+                fontSize: 15,
+                fontWeight: 700,
+                color: "#F5F7F6",
+                margin: "0 0 5px",
+                lineHeight: 1.3,
+              }}
+            >
+              Мы уже знаем планировки вашего ЖК
+            </p>
+            <p style={{ fontSize: 13, color: "#9BA8A3", margin: 0, lineHeight: 1.5 }}>
+              {complexName} — партнёр RenoAI. Планировки всех квартир уже в системе,
+              анализ пространства пройдёт автоматически.
+            </p>
+          </div>
+        </div>
+
+        {/* Benefits */}
+        {[
+          "Загрузка файла не требуется",
+          "Анализ пространства начнётся автоматически",
+          "Специальные условия от партнёрской программы",
+        ].map((item, i) => (
+          <motion.div
+            key={item}
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 + i * 0.07 }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 14px",
+              borderRadius: 12,
+              background: "rgba(13,36,32,0.5)",
+              border: "1px solid rgba(30,74,62,0.3)",
+              marginBottom: 8,
+            }}
+          >
+            <div
+              style={{
+                width: 20,
+                height: 20,
+                borderRadius: "50%",
+                background: "rgba(45,143,90,0.15)",
+                border: "1px solid rgba(45,143,90,0.35)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path
+                  d="M2 5L4.2 7.2L8 3"
+                  stroke="#2D8F5A"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+            <span style={{ fontSize: 13, color: "#C8D4CF" }}>{item}</span>
+          </motion.div>
+        ))}
+      </motion.div>
+    </StepWrapper>
+  );
+}

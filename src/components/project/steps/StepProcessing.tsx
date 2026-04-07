@@ -33,9 +33,9 @@ const TONES: { id: Tones; label: string; desc: string; dot: string }[] = [
 ];
 
 const BUDGETS: { id: Budget; label: string; range: string }[] = [
-  { id: "minimum", label: "Минимальный", range: "до 500 000 ₽" },
-  { id: "medium", label: "Средний", range: "500 000 — 1 500 000 ₽" },
-  { id: "premium", label: "Премиум", range: "от 1 500 000 ₽" },
+  { id: "minimum", label: "Минимальный", range: "до 3 000 000 ₸" },
+  { id: "medium", label: "Средний", range: "3 000 000 — 9 000 000 ₸" },
+  { id: "premium", label: "Премиум", range: "от 9 000 000 ₸" },
 ];
 
 export default function StepProcessing() {
