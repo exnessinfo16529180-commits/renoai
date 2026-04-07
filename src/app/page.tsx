@@ -1,59 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 
-// Dynamically import heavy components for better performance
-const LoadingIntro = dynamic(() => import("@/components/LoadingIntro"), { ssr: false });
+// Dynamically import heavy/client-only components
 const HeroSection = dynamic(() => import("@/components/HeroSection"), { ssr: false });
-const StickyCTA = dynamic(() => import("@/components/StickyCTA"), { ssr: false });
+const DemoFlow   = dynamic(() => import("@/components/DemoFlow"),    { ssr: false });
+const StickyCTA  = dynamic(() => import("@/components/StickyCTA"),   { ssr: false });
 
+import HeroContent  from "@/components/HeroContent";
 import AboutSection from "@/components/AboutSection";
-import HowItWorks from "@/components/HowItWorks";
-import ProductFlow from "@/components/ProductFlow";
-import Benefits from "@/components/Benefits";
-import FinalCTA from "@/components/FinalCTA";
-import Footer from "@/components/Footer";
+import HowItWorks   from "@/components/HowItWorks";
+import ProductFlow  from "@/components/ProductFlow";
+import Benefits     from "@/components/Benefits";
+import FinalCTA     from "@/components/FinalCTA";
+import Footer       from "@/components/Footer";
 
 export default function Home() {
-  const [introComplete, setIntroComplete] = useState(false);
+  const [heroScrolled, setHeroScrolled] = useState(false);
+  const [demoOpen,     setDemoOpen]     = useState(false);
+
+  // Lock scroll until user explicitly scrolls past the hero
+  useEffect(() => {
+    if (heroScrolled) return;
+
+    document.documentElement.style.overflow = "hidden";
+
+    // iOS Safari: also block touchmove
+    const block = (e: TouchEvent) => e.preventDefault();
+    document.addEventListener("touchmove", block, { passive: false });
+
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.removeEventListener("touchmove", block);
+    };
+  }, [heroScrolled]);
+
+  const handleScrollDown = useCallback(() => {
+    setHeroScrolled(true);
+    // Give browser one frame to release the lock, then smooth-scroll
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.getElementById("main-content")?.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+  }, []);
 
   return (
     <>
-      {/* Loading intro — shows on first load */}
-      <LoadingIntro onComplete={() => setIntroComplete(true)} />
+      {/* ── Full-screen video → photo hero ── */}
+      <HeroSection onScrollDown={handleScrollDown} />
 
-      {/* Main site content */}
-      <main
-        className="relative"
-        style={{
-          opacity: introComplete ? 1 : 0,
-          transition: "opacity 0.6s ease",
-        }}
-      >
-        {/* 1. Hero Section with video/image background */}
-        <HeroSection />
+      {/* ── All content below the hero ── */}
+      <main id="main-content">
+        {/* Headline + CTAs that appear after scroll */}
+        <HeroContent onDemoOpen={() => setDemoOpen(true)} />
 
-        {/* 2. About / Value Section */}
         <AboutSection />
-
-        {/* 3. How It Works */}
         <HowItWorks />
-
-        {/* 4. Product Flow Preview */}
         <ProductFlow />
-
-        {/* 5. Benefits / Why RenoAI */}
         <Benefits />
-
-        {/* 6. Final CTA */}
         <FinalCTA />
-
-        {/* 7. Footer */}
         <Footer />
       </main>
 
-      {/* Sticky mobile CTA — appears after scrolling past hero */}
+      {/* ── Interactive demo modal ── */}
+      {demoOpen && <DemoFlow onClose={() => setDemoOpen(false)} />}
+
+      {/* ── Sticky bottom CTA (appears after scrolling past hero) ── */}
       <StickyCTA />
     </>
   );
