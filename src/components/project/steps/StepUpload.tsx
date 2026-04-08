@@ -25,7 +25,7 @@ function formatBytes(bytes: number) {
 }
 
 export default function StepUpload() {
-  const { uploadedFile, selectedComplex, update, setStep } = useProjectStore();
+  const { uploadedFile, images, selectedComplex, update, setStep } = useProjectStore();
 
   // If a partner complex was selected on the landing page, show the privilege screen
   if (selectedComplex) {
@@ -36,11 +36,13 @@ export default function StepUpload() {
 
   const handleFile = useCallback(
     (file: File) => {
+      const meta = { name: file.name, type: file.type, size: file.size };
       update({
-        uploadedFile: { name: file.name, type: file.type, size: file.size },
+        uploadedFile: meta,
+        images: [...(images ?? []), meta],
       });
     },
-    [update]
+    [update, images]
   );
 
   const onDrop = useCallback(
@@ -54,11 +56,11 @@ export default function StepUpload() {
   );
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) handleFile(file);
+    const files = e.target.files;
+    if (files) Array.from(files).forEach(handleFile);
   };
 
-  const clear = () => update({ uploadedFile: null });
+  const clear = () => update({ uploadedFile: null, images: [] });
 
   return (
     <StepWrapper
@@ -66,12 +68,12 @@ export default function StepUpload() {
       subtitle="Фото комнаты, план квартиры или PDF — подойдёт любой формат"
       cta={
         uploadedFile
-          ? { label: "Продолжить", onClick: () => setStep(4) }
+          ? { label: "Продолжить", onClick: () => setStep(2) }
           : null
       }
       secondary={
         uploadedFile
-          ? { label: "Пропустить этот шаг", onClick: () => setStep(4) }
+          ? { label: "Пропустить этот шаг", onClick: () => setStep(2) }
           : undefined
       }
     >
@@ -152,6 +154,7 @@ export default function StepUpload() {
               ref={inputRef}
               type="file"
               accept="image/*,.pdf"
+              multiple
               style={{ display: "none" }}
               onChange={onInputChange}
             />
@@ -204,7 +207,7 @@ export default function StepUpload() {
 
             {/* Skip option */}
             <button
-              onClick={() => setStep(4)}
+              onClick={() => setStep(2)}
               style={{
                 marginTop: 20,
                 width: "100%",
@@ -350,8 +353,8 @@ function ComplexPrivilegeScreen({ complexId }: { complexId: string }) {
     <StepWrapper
       title="Планировки уже загружены"
       cta={{
-        label: "Перейти к анализу",
-        onClick: () => setStep(4),
+        label: "Перейти к выбору стиля",
+        onClick: () => setStep(2),
       }}
       secondary={{
         label: "Загрузить другой файл",

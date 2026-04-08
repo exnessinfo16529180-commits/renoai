@@ -14,11 +14,35 @@ export interface UploadedFile {
   size: number;
 }
 
+export interface EstimateItem {
+  label: string;
+  amount: number;
+}
+
+export interface Estimate {
+  total: number;
+  breakdown: EstimateItem[];
+  currency: string;
+}
+
 export interface ProjectData {
   currentStep: number;
+
+  // ── New flow state ───────────────────────────────────────────────────────
+  /** Multiple uploaded floor plan / photo files */
+  images: UploadedFile[];
+  /** Auto-generated cost estimate (populated at Step 5) */
+  estimate: Estimate | null;
+  /** Selected contractor id (mirrors selectedTeam) */
+  selectedContractor: string | null;
+  /** Renovation progress 0–100 */
+  progress: number;
+
+  // ── Legacy / extended fields ──────────────────────────────────────────────
   projectType: ProjectType | null;
   scope: Scope | null;
   roomType: RoomType | null;
+  /** Single file kept for backwards compat; images[] is canonical */
   uploadedFile: UploadedFile | null;
   atmosphere: string | null;
   tones: Tones | null;
@@ -43,6 +67,10 @@ export type ProjectState = ProjectData & ProjectActions;
 
 const initial: ProjectData = {
   currentStep: 1,
+  images: [],
+  estimate: null,
+  selectedContractor: null,
+  progress: 0,
   projectType: null,
   scope: null,
   roomType: null,
@@ -71,19 +99,16 @@ export const useProjectStore = create<ProjectState>()(
   )
 );
 
-export const TOTAL_STEPS = 12;
+export const TOTAL_STEPS = 9;
 
 export const STEP_LABELS: Record<number, string> = {
-  1: "Тип проекта",
-  2: "Объём работ",
-  3: "Загрузка",
-  4: "Анализ",
-  5: "Стиль",
-  6: "Генерация",
-  7: "Концепции",
-  8: "Материалы",
-  9: "Доставка",
-  10: "Команда",
-  11: "Итог",
-  12: "Договор",
+  1: "Загрузка",
+  2: "Стиль",
+  3: "Визуализация",
+  4: "Кастомизация",
+  5: "Смета",
+  6: "Бюджет",
+  7: "Материалы",
+  8: "Подрядчики",
+  9: "Прогресс",
 };

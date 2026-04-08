@@ -29,7 +29,7 @@ export default function StepGeneration() {
     const advance = (step: number) => {
       if (step >= GENERATION_STEPS.length) {
         setDone(true);
-        setTimeout(() => setStep(7), 900);
+        setTimeout(() => setStep(4), 900);
         return;
       }
       setCurrentStep(step);

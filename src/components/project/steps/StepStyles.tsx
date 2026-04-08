@@ -32,7 +32,7 @@ export default function StepStyles() {
   };
 
   const handleContinue = () => {
-    if (selectedStyle) setStep(6);
+    if (selectedStyle) setStep(3);
   };
 
   return (

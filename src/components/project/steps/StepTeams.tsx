@@ -26,7 +26,7 @@ export default function StepTeams() {
       cta={{
         label: "Продолжить",
         disabled: !selectedTeam,
-        onClick: () => setStep(11),
+        onClick: () => setStep(9),
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -38,7 +38,7 @@ export default function StepTeams() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: i * 0.1 }}
-              onClick={() => update({ selectedTeam: team.id })}
+              onClick={() => update({ selectedTeam: team.id, selectedContractor: team.id })}
               style={{
                 display: "flex",
                 flexDirection: "column",

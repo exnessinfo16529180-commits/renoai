@@ -50,7 +50,7 @@ export default function StepMaterials() {
       cta={{
         label: "Продолжить",
         disabled: !selectedStore,
-        onClick: () => setStep(9),
+        onClick: () => setStep(8),
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>

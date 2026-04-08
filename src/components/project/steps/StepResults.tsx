@@ -132,7 +132,7 @@ export default function StepResults() {
         </AnimatePresence>
 
         <button
-          onClick={() => { if (selectedConcept) setStep(8); }}
+          onClick={() => { if (selectedConcept) setStep(5); }}
           disabled={!selectedConcept}
           style={{
             width: "100%",
