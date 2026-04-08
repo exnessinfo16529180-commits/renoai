@@ -177,3 +177,70 @@ button, a {
   background: radial-gradient(circle, rgba(200, 155, 60, 0.1) 0%, transparent 70%);
   pointer-events: none;
 }
+
+/* ============================================================
+   Design System — from new design spec
+   ============================================================ */
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+}
+
+.glass-card-hover {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.glow-button {
+  background: linear-gradient(135deg, #1f7a5c 0%, #166a4e 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 1rem 1.75rem;
+  border-radius: 0.75rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(31, 122, 92, 0.3), 0 0 40px rgba(31, 122, 92, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.15s ease;
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 30px rgba(31, 122, 92, 0.5), 0 0 60px rgba(31, 122, 92, 0.2);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #6ee7b7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* Emerald color scale for design system */
+.bg-emerald-950 { background-color: #052e16 !important; }
+.bg-emerald-900 { background-color: #14532d !important; }
+
+/* Animation delays */
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }

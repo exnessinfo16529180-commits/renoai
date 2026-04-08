@@ -1,48 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 
-const HeroSection        = dynamic(() => import("@/components/HeroSection"),        { ssr: false });
-const DemoFlow           = dynamic(() => import("@/components/DemoFlow"),            { ssr: false });
-const StickyCTA          = dynamic(() => import("@/components/StickyCTA"),           { ssr: false });
-const ResidentialSection = dynamic(() => import("@/components/ResidentialSection"), { ssr: false });
-
-import HeroContent  from "@/components/HeroContent";
-import AboutSection from "@/components/AboutSection";
-import HowItWorks   from "@/components/HowItWorks";
-import ProductFlow  from "@/components/ProductFlow";
-import Benefits     from "@/components/Benefits";
-import FinalCTA     from "@/components/FinalCTA";
-import Footer       from "@/components/Footer";
+const Navigation      = dynamic(() => import("@/sections/Navigation"),      { ssr: false });
+const HeroNew         = dynamic(() => import("@/sections/HeroNew"),         { ssr: false });
+const FlowSteps       = dynamic(() => import("@/sections/FlowSteps"),       { ssr: false });
+const DashboardPreview= dynamic(() => import("@/sections/DashboardPreview"),{ ssr: false });
+const TrustSection    = dynamic(() => import("@/sections/TrustSection"),    { ssr: false });
+const AudienceCards   = dynamic(() => import("@/sections/AudienceCards"),   { ssr: false });
+const FinalCTA        = dynamic(() => import("@/sections/FinalCTA"),        { ssr: false });
+const SiteFooter      = dynamic(() => import("@/sections/SiteFooter"),      { ssr: false });
 
 export default function Home() {
-  const [demoOpen, setDemoOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
-  // No scroll locking. No forced repositioning. No overflow manipulation.
-  // The hero is a normal full-screen section — users scroll past it naturally.
-  // This handler is called only by the "Листайте" button click.
-  const handleScrollDown = () => {
-    document.getElementById("main-content")?.scrollIntoView();
-  };
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <>
-      <HeroSection onScrollDown={handleScrollDown} />
+    <div style={{ minHeight: "100vh", background: "#052e16", overflowX: "hidden" }}>
+      <Navigation scrollY={scrollY} />
 
-      <main id="main-content">
-        <HeroContent onDemoOpen={() => setDemoOpen(true)} />
-        <AboutSection />
-        <HowItWorks />
-        <ProductFlow />
-        <ResidentialSection />
-        <Benefits />
+      <main>
+        <HeroNew />
+        <FlowSteps />
+        <DashboardPreview />
+        <TrustSection />
+        <AudienceCards />
         <FinalCTA />
-        <Footer />
       </main>
 
-      {demoOpen && <DemoFlow onClose={() => setDemoOpen(false)} />}
-      <StickyCTA />
-    </>
+      <SiteFooter />
+    </div>
   );
 }
