@@ -42,12 +42,11 @@ function fmt(n: number) {
 export default function StepEstimate() {
   const { selectedStyle, budget, estimate, update, setStep } = useProjectStore();
 
-  // Generate estimate once on mount if not yet set
+  // Recalculate whenever style or budget changes
   useEffect(() => {
-    if (!estimate) {
-      update({ estimate: buildEstimate(selectedStyle, budget) });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    update({ estimate: buildEstimate(selectedStyle, budget) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStyle, budget]);
 
   const est = estimate ?? buildEstimate(selectedStyle, budget);
 

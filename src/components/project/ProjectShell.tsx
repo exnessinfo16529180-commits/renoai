@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useProjectStore, TOTAL_STEPS, STEP_LABELS } from "@/lib/project-store";
+import ProjectDashboard from "@/components/project/ProjectDashboard";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -168,7 +169,15 @@ export default function ProjectShell({ children }: { children: React.ReactNode }
       </header>
 
       {/* ── Step content ─────────────────────────────────────────────── */}
-      <main style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+      <main
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          // Extra bottom space so dashboard never overlaps content
+          paddingBottom: currentStep >= 2 ? 66 : 0,
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
@@ -182,6 +191,8 @@ export default function ProjectShell({ children }: { children: React.ReactNode }
           </motion.div>
         </AnimatePresence>
       </main>
+
+      <ProjectDashboard />
     </div>
   );
 }

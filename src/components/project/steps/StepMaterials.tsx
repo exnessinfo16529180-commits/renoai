@@ -40,8 +40,23 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
+// Budget tier → preferred price level(s)
+const BUDGET_PRICE_MATCH: Record<string, number[]> = {
+  minimum: [1],
+  medium:  [1, 2],
+  premium: [2, 3],
+};
+
 export default function StepMaterials() {
-  const { selectedStore, update, setStep } = useProjectStore();
+  const { selectedStore, budget, update, setStep } = useProjectStore();
+
+  // Sort: matching stores first
+  const matchLevels = budget ? (BUDGET_PRICE_MATCH[budget] ?? []) : [];
+  const sortedStores = [...STORES].sort((a, b) => {
+    const aMatch = matchLevels.includes(a.priceLevel) ? 0 : 1;
+    const bMatch = matchLevels.includes(b.priceLevel) ? 0 : 1;
+    return aMatch - bMatch;
+  });
 
   return (
     <StepWrapper
@@ -54,8 +69,9 @@ export default function StepMaterials() {
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {STORES.map((store, i) => {
+        {sortedStores.map((store, i) => {
           const selected = selectedStore === store.id;
+          const budgetMatch = matchLevels.includes(store.priceLevel);
           return (
             <motion.button
               key={store.id}
@@ -80,8 +96,8 @@ export default function StepMaterials() {
                 boxShadow: selected ? "0 8px 24px rgba(200,155,60,0.1)" : "none",
               }}
             >
-              {/* Badge */}
-              {store.badge && (
+              {/* Budget-match badge or original badge */}
+              {(budgetMatch || store.badge) && (
                 <div
                   style={{
                     position: "absolute",
@@ -89,15 +105,21 @@ export default function StepMaterials() {
                     right: 16,
                     padding: "3px 8px",
                     borderRadius: 100,
-                    background: selected ? "rgba(200,155,60,0.2)" : "rgba(30,74,62,0.5)",
-                    border: `1px solid ${selected ? "rgba(200,155,60,0.4)" : "rgba(30,74,62,0.4)"}`,
+                    background: budgetMatch
+                      ? (selected ? "rgba(45,143,90,0.2)" : "rgba(45,143,90,0.12)")
+                      : (selected ? "rgba(200,155,60,0.2)" : "rgba(30,74,62,0.5)"),
+                    border: `1px solid ${
+                      budgetMatch
+                        ? "rgba(45,143,90,0.4)"
+                        : (selected ? "rgba(200,155,60,0.4)" : "rgba(30,74,62,0.4)")
+                    }`,
                     fontSize: 10,
-                    color: selected ? "#C89B3C" : "#9BA8A3",
+                    color: budgetMatch ? "#2D8F5A" : (selected ? "#C89B3C" : "#9BA8A3"),
                     fontWeight: 600,
                     letterSpacing: "0.03em",
                   }}
                 >
-                  {store.badge}
+                  {budgetMatch ? "✓ Под ваш бюджет" : store.badge}
                 </div>
               )}
 

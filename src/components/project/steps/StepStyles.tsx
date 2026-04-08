@@ -28,7 +28,8 @@ export default function StepStyles() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (id: StyleId) => {
-    update({ selectedStyle: id });
+    // Clear stored estimate so it recalculates with the new style
+    update({ selectedStyle: id, estimate: null });
   };
 
   const handleContinue = () => {

@@ -74,7 +74,7 @@ export default function StepBudget() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: i * 0.08 }}
-              onClick={() => update({ budget: tier.id })}
+              onClick={() => update({ budget: tier.id, estimate: null })}
               style={{
                 display: "flex",
                 flexDirection: "column",
