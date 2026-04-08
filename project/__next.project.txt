@@ -1,4 +1,4 @@
 1:"$Sreact.fragment"
 2:I[39756,["/renoai/_next/static/chunks/01xlw8hd842-c.js","/renoai/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
 3:I[37457,["/renoai/_next/static/chunks/01xlw8hd842-c.js","/renoai/_next/static/chunks/0d3shmwh5_nmn.js"],"default"]
-0:{"rsc":["$","$1","c",{"children":[null,["$","div",null,{"style":{"background":"#081512","minHeight":"100dvh","color":"#F5F7F6","fontFamily":"'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif","WebkitFontSmoothing":"antialiased"},"children":["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"rnnvHFgI53WN5gMCcRrC5"}
+0:{"rsc":["$","$1","c",{"children":[null,["$","div",null,{"style":{"background":"#081512","minHeight":"100dvh","color":"#F5F7F6","fontFamily":"'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif","WebkitFontSmoothing":"antialiased"},"children":["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"Pwb04yIKbK4YNshh94ujb"}
